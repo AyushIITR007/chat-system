@@ -1,6 +1,9 @@
 # chat-system
 chatting application #Damn right
 
+We need read/write access for the repo.
+Update: Nevermind
+
 Server: Node.js
 FrontEnd: HTML/CSS, Javascript and its libraries 
 BackEnd: Node (duh)
