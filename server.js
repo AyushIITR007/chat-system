@@ -1,20 +1,14 @@
-const express = require('express')
-const server = express()
-const port = 8080
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
 
-const requestTime = function (req, res, next) {
-  req.requestTime = Date.now()
-  next()
-}
+app.use(express.static("app"));
 
-server.use(requestTime)
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/app/index.html');
+});
 
-server.get('/', (req, res) => {
-  let responseText = 'Hello World!<br>'
-  responseText += `<small>Requested at: ${req.requestTime}</small>`
-  res.send(responseText)
-})
-
-server.listen(port, () => {
-  console.log("Listening on port: " + port)
-})
+server.listen(3000, () => {
+  console.log('listening on *:3000');
+});
