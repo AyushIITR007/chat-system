@@ -5,10 +5,8 @@ We need read/write access for the repo.
 
 Server: Node.js
 FrontEnd: HTML/CSS, Javascript and its libraries 
-BackEnd: Node (duh)
-DB: MYSQL
-
-Let's go bois!!!!!
+BackEnd: Node
+DB: Redis
 
 Plan:
 0) Implement custom websocket
