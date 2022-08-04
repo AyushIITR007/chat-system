@@ -1,17 +1,15 @@
 # chat-system
-chatting application #Damn right
+chatting application
 
 We need read/write access for the repo.
-Update: Nevermind
 
 Server: Node.js
 FrontEnd: HTML/CSS, Javascript and its libraries 
-BackEnd: Node (duh)
-DB: MYSQL
-
-Let's go bois!!!!!
+BackEnd: Node
+DB: Redis
 
 Plan:
+0) Implement custom websocket
 1) Basic sender/receiver chat system
 2) User system and login feature
 3) Group chat system

@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 var WebSocketServer = require('websocket').server;
 
+app.use(express.static("app"));
 var wsServer = new WebSocketServer({
   httpServer: server
 });
