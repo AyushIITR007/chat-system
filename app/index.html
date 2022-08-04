@@ -1,23 +1,39 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <link rel="stylesheet" href="index.css" /> 
-    <!-- <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 25%; right: 25%; width: 50%; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); border: 1px solid #777; }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-      #form > button:hover { border: 2px solid #2b09a5; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
-    </style> -->
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
+    <script>
+      var ws = new WebSocket("ws://localhost:3000");
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          var data = JSON.stringify({
+            message: input.value,
+            time: Date.now()
+          });
+          ws.send(data);
+        }
+        input.value = '';
+      });
+
+      ws.onmessage = (message) => {
+        var item = document.createElement('li');
+        //parsing once was still converting to string for some reason, but parsing twice worked
+        var myJson = JSON.parse(message.data);
+        myJson = JSON.parse(myJson);
+        var text = myJson.message;
+        var time = myJson.time;
+        item.textContent = time + ": " + text;
+        messages.appendChild(item);
+      }
+    
+    </script>
   </body>
 </html>
