@@ -3,8 +3,8 @@ const server = express()
 const port = 8080
 
 const requestTime = function (req, res, next) {
-  req.requestTime = Date.now()
-  next()
+  req.requestTime = Date.now();
+  next();
 }
 
 server.use(requestTime)

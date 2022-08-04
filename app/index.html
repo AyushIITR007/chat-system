@@ -20,5 +20,62 @@
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
+    <!-- <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var webSocket = new ws();
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          // var data = JSON.stringify({
+          //   message: input.value,
+          //   time: Date.now()
+          // });
+          // socket.emit('send message', data);
+          var data = JSON.stringify({
+            message: input.value,
+            time: Date.now(),
+            type: "send"
+          });
+          webSocket.send(data);
+          input.value = '';
+        }
+      });
+
+      socket.on('chat message', function(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script> -->
+    <script>
+      
+      var ws = new WebSocket("ws://localhost:3000");
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          var data = JSON.stringify({
+            message: input.value,
+            time: Date.now()
+          });
+          ws.send(data);
+        }
+        input.value = '';
+      });
+
+      ws.onmessage = (message) => {
+        var item = document.createElement('li');
+        //parsing once was still converting to string for some reason, but parsing twice worked
+        var myJson = JSON.parse(message.data);
+        myJson = JSON.parse(myJson);
+        var text = myJson.message;
+        var time = myJson.time;
+        item.textContent = time + ": " + text;
+        messages.appendChild(item);
+      }
+
+    </script>
   </body>
 </html>
