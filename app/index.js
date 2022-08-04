@@ -9,30 +9,33 @@ var ws = new WebSocket("ws://localhost:3000");
 //     password: '<password>'
 // });
 
-client.on('error', err => {
-    console.log('Error ' + err);
-});
+const messageForm = document.getElementsByClassName("sendMessageForm");
+const messageBox = document.getElementsByClassName("messageBox");
+const messages = document.getElementsByClassName("messages");
+const sendMessageFunctionName = "sendMessage";
 
-form.addEventListener('submit', function(e) {
+messageForm[0].addEventListener('submit', function(e) {
   e.preventDefault();
   const datetime = new Date(Date.now());
-  if (input.value) {
+  console.log(datetime.getDate());
+  if (messageBox[0].value) {
     var data = JSON.stringify({
-      message: input.value,
-      time: datetime.toString()
+      message: messageBox[0].value.trim(),
+      time: datetime.toString(),
+      funcName: sendMessageFunctionName
     });
     ws.send(data);
   }
-  input.value = '';
+  messageBox[0].value = '';
 });
 
 ws.onmessage = (message) => {
-  var item = document.createElement('li');
+  var item = document.createElement('div');
+  item.setAttribute("class", "messageBlock");
   //parsing once was still converting to string for some reason, but parsing twice worked
   var myJson = JSON.parse(message.data);
-  myJson = JSON.parse(myJson);
   var text = myJson.message;
   var time = myJson.time;
-  item.textContent = time + ": " + text;
-  messages.appendChild(item);
+  item.textContent = text + " (" + time + ")";
+  messages[0].appendChild(item);
 }

@@ -1,13 +1,43 @@
 <html>
   <head>
-    <title>ChatRoom</title>
+    <title>ChatRoom | Say hello to the world</title>
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div class="container">
+      <div class="topBar">
+        <center><p>ChatRoom @ World</p></center>
+      </div>
+      <div class="sectionsHolder">
+        <div class="section" id="leftSection">
+          <div class="searchFormHolder">
+            <form class="searchForm">
+              <div class="searchBarHolder">
+                <input type="text" class="searchBar" autocomplete="off" placeholder="Click to search" />
+              </div>
+              <div class="searchButtonHolder">
+                <input type="submit" class="searchButton" value="Find" />
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="section" id="rightSection">
+          <div class="messagesHolder">
+            <div class="messages"></div>
+          </div>
+          <div class="sendMessageFormHolder">
+            <form class="sendMessageForm" id="sendMessageForm">
+              <div class="messageBoxHolder">
+                <input class="messageBox" placeholder="Click to type a message" autocomplete="off" />
+              </div>
+              <div class="sendMessageButtonHolder">
+                <input type="submit" class="sendMessageButton" value="Send" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>
