@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>ChatRoom</title>
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
@@ -8,32 +8,6 @@
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
-    <script>
-      var ws = new WebSocket("ws://localhost:3000");
-      
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (input.value) {
-          var data = JSON.stringify({
-            message: input.value,
-            time: Date.now()
-          });
-          ws.send(data);
-        }
-        input.value = '';
-      });
-
-      ws.onmessage = (message) => {
-        var item = document.createElement('li');
-        //parsing once was still converting to string for some reason, but parsing twice worked
-        var myJson = JSON.parse(message.data);
-        myJson = JSON.parse(myJson);
-        var text = myJson.message;
-        var time = myJson.time;
-        item.textContent = time + ": " + text;
-        messages.appendChild(item);
-      }
-    
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>

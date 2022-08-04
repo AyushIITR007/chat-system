@@ -1,27 +1,38 @@
-const express = require('express');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
-var WebSocketServer = require('websocket').server;
+var ws = new WebSocket("ws://localhost:3000");
 
-app.use(express.static("app"));
-var wsServer = new WebSocketServer({
-  httpServer: server
+// const redis = require('redis');
+// const client = redis.createClient({
+//     socket: {
+//         host: '<hostname>',
+//         port: <port>
+//     },
+//     password: '<password>'
+// });
+
+client.on('error', err => {
+    console.log('Error ' + err);
 });
 
-wsServer.on('request', function(request) {
-  var connection = request.accept(null, request.origin);
-  connection.on('message', (data) => {
-    connection.send(JSON.stringify(data.utf8Data));
-  });
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const datetime = new Date(Date.now());
+  if (input.value) {
+    var data = JSON.stringify({
+      message: input.value,
+      time: datetime.toString()
+    });
+    ws.send(data);
+  }
+  input.value = '';
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
-server.listen(3000, () => {
-  console.log('listening on *:3000');
-});
+ws.onmessage = (message) => {
+  var item = document.createElement('li');
+  //parsing once was still converting to string for some reason, but parsing twice worked
+  var myJson = JSON.parse(message.data);
+  myJson = JSON.parse(myJson);
+  var text = myJson.message;
+  var time = myJson.time;
+  item.textContent = time + ": " + text;
+  messages.appendChild(item);
+}
