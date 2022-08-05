@@ -17,7 +17,6 @@ const sendMessageFunctionName = "sendMessage";
 messageForm[0].addEventListener('submit', function(e) {
   e.preventDefault();
   const datetime = new Date(Date.now());
-  console.log(datetime.getDate());
   if (messageBox[0].value) {
     var data = JSON.stringify({
       message: messageBox[0].value.trim(),
