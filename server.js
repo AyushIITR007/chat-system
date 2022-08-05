@@ -3,11 +3,13 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const WebSocketServer = require('websocket').server;
+const favicon = require('serve-favicon');
 
 const sendMessageFunctionName = "sendMessage";
 
 //To load static files from "app" directory
 app.use(express.static("app"));
+app.use(favicon(__dirname + "/app/favicon.png"));
 
 
 //Initializing websocket

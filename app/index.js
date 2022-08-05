@@ -32,7 +32,6 @@ messageForm[0].addEventListener('submit', function(e) {
 ws.onmessage = (message) => {
   var item = document.createElement('div');
   item.setAttribute("class", "messageBlock");
-  //parsing once was still converting to string for some reason, but parsing twice worked
   var myJson = JSON.parse(message.data);
   var text = myJson.message;
   var time = myJson.time;
