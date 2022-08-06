@@ -16,7 +16,6 @@ const sendMessageFunctionName = "sendMessage";
 
 function makeDoubleDigitIfSingle(num)
 {
-  console.log(num/10)
   return (num/10) < 1 ? "0" + num : num;
 }
 
