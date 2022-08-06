@@ -14,13 +14,21 @@ const messageBox = document.getElementsByClassName("messageBox");
 const messages = document.getElementsByClassName("messages");
 const sendMessageFunctionName = "sendMessage";
 
+function makeDoubleDigitIfSingle(num)
+{
+  console.log(num/10)
+  return (num/10) < 1 ? "0" + num : num;
+}
+
 messageForm[0].addEventListener('submit', function(e) {
   e.preventDefault();
-  const datetime = new Date(Date.now());
+  const currdatetime = new Date(Date.now());
+  var dateForDisplay = "[" + makeDoubleDigitIfSingle(currdatetime.getDay()) + "/" + makeDoubleDigitIfSingle(currdatetime.getMonth()) + "/" + (currdatetime.getFullYear() - 2000) + "]";
+  var timeForDisplay = makeDoubleDigitIfSingle(currdatetime.getHours()) + ":" + makeDoubleDigitIfSingle(currdatetime.getMinutes());
   if (messageBox[0].value) {
     var data = JSON.stringify({
       message: messageBox[0].value.trim(),
-      time: datetime.toString(),
+      time: dateForDisplay + " " + timeForDisplay,
       funcName: sendMessageFunctionName
     });
     ws.send(data);
@@ -34,6 +42,6 @@ ws.onmessage = (message) => {
   var myJson = JSON.parse(message.data);
   var text = myJson.message;
   var time = myJson.time;
-  item.textContent = text + " (" + time + ")";
+  item.textContent = time + " - " + text;
   messages[0].appendChild(item);
 }
