@@ -22,18 +22,18 @@ function makeDoubleDigitIfSingle(num)
 function AmPmFormatting(time)
 {
   var hours = Number(time.substring(0,2));
-  if (hours > 12)
+  if (hours >= 12)
   {
-    hours -= 12;
-    time += "pm";
+    if(hours != 12) {
+      hours -= 12;
+    }
+    time += "PM";
   }
-  else if (hours == 12)
-  {
-    time += "pm";
+  else {
+    time += "AM";
   }
-  time[0] = (hours/10)%1;
-  time[1] = hours%10;
-  return time;
+  var formattedTime = parseInt((hours/10)).toString() + hours%10 + time.substring(2)
+  return formattedTime;
 }
 
 messageForm[0].addEventListener('submit', function(e) {
@@ -49,15 +49,26 @@ messageForm[0].addEventListener('submit', function(e) {
     });
     ws.send(data);
   }
-  messageBox[0].value = '';
+  messageBox[0].value = "";
 });
 
 ws.onmessage = (message) => {
-  var item = document.createElement('div');
-  item.setAttribute("class", "messageBlock");
-  var myJson = JSON.parse(message.data);
-  var text = myJson.message;
-  var time = myJson.time;
-  item.textContent = time + " - " + text;
-  messages[0].appendChild(item);
+  var block = document.createElement("div");
+  block.setAttribute("class", "messageBlock");
+  var msgHolder = document.createElement("div");
+  msgHolder.setAttribute("class", "msgHolder");
+  var timeStampHolder = document.createElement("div");
+  timeStampHolder.setAttribute("class", "timeStampHolder");
+  var msgTextHolder = document.createElement("div");
+  msgTextHolder.setAttribute("class", "msgTextHolder");
+
+  var msgJson = JSON.parse(message.data);
+  timeStampHolder.textContent = msgJson.time;
+  msgTextHolder.textContent = msgJson.message;
+
+  msgHolder.appendChild(timeStampHolder);
+  msgHolder.appendChild(msgTextHolder);
+  block.appendChild(msgHolder);
+  messages[0].appendChild(block);
+  block.scrollIntoView({block: "end"});
 }

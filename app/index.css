@@ -1,5 +1,6 @@
 body {
 	margin: auto;
+	background: #cb2a2a;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 	overflow-x: hidden;
 }
@@ -9,8 +10,6 @@ input:focus,input:active,textarea:focus,textarea:active {
 }
 
 .container {
-	width: 100%;
-	height: 100%;
 	display: flex;
 	flex-flow: column wrap;
 }
@@ -21,7 +20,7 @@ input:focus,input:active,textarea:focus,textarea:active {
 	z-index: 2000;
 	display: flex;
 	flex-flow: row wrap;
-	height: 5%;
+	height: 5vh;
 }
 
 .titleHolder {
@@ -64,7 +63,7 @@ input:focus,input:active,textarea:focus,textarea:active {
 }
 
 .sectionsHolder {
-	height: 95%;
+	height: 95vh;
 	display: flex;
 	flex-flow: row wrap;
 }
@@ -135,29 +134,60 @@ input:focus,input:active,textarea:focus,textarea:active {
 }
 
 #rightSection {
-	display: flex;
 	width: 75%;
-	flex-flow: column wrap;
 	background: #616161;
 }
 
 .messagesHolder {
 	width: 100%;
 	height: 85%;
+	max-height: 85%;
+	display: flex;
+	flex-flow: column wrap;
+	align-items: center;
 }
 
 .messages {
-	width: 100%;
+	width: 80%;
 	height: 100%;
+	max-height: 100%;
 	display: flex;
 	flex-flow: column nowrap;
-	margin: 0.5rem;
+	overflow-y: scroll;
+  	-ms-overflow-style: none;
+  	scrollbar-width: none;
+}
+
+.messages::-webkit-scrollbar {
+	display: none;
 }
 
 .messageBlock {
 	width: auto;
-	padding: 0.4rem;
+}
+
+.msgHolder {
+	height: auto;
+	max-width: 60%;
+	margin-top: 1rem;
+	background: #585858;
 	border-radius: 0.2rem;
+	display: inline-block;
+	padding: 0.5rem;
+	box-shadow: 0 1px 1px #333;
+}
+
+.timeStampHolder {
+	width: 100%;
+	color: #ed6109;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 90%;
+}
+
+.msgTextHolder {
+	color: #fff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-weight: normal;
 }
 
 .sendMessageFormHolder {
@@ -165,12 +195,13 @@ input:focus,input:active,textarea:focus,textarea:active {
 	width: 100%;
 	display: flex;
 	flex-flow: row wrap;
+	justify-content: center;
 	align-items: center;
 }
 
 .sendMessageForm {
 	height: 100%;
-	width: 100%;
+	width: 80%;
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
@@ -178,7 +209,7 @@ input:focus,input:active,textarea:focus,textarea:active {
 }
 
 .messageBoxHolder {
-	width: 60%;
+	width: 90%;
 	height: auto;
 	display: flex;
 	flex-flow: row wrap;
@@ -187,8 +218,6 @@ input:focus,input:active,textarea:focus,textarea:active {
 
 .messageBox {
 	padding: 0.5rem;
-	margin: 0.5rem;
-	margin-right: 0;
 	width: 100%;
 	resize: none;
 	line-height: 1;
@@ -214,8 +243,6 @@ input:focus,input:active,textarea:focus,textarea:active {
 .sendMessageButton {
 	width: 100%;
 	padding: 0.5rem;
-	margin: 0.5rem;
-	margin-left: 0;
 	border: none;
 	border-radius: 0 0.2rem 0.2rem 0;
 	background: #ed6109;
