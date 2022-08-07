@@ -29,11 +29,29 @@ function AmPmFormatting(time)
   return formattedTime;
 }
 
-window.onload = function() { 
+async function ajaxHandler(method, endpoint, async=true) { 
+    // Making our connection to given route  
+  xhr.open(method, endpoint, async);
+  
+  // Sending our request 
+  xhr.send();
 
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+        return JSON.parse(this.response);
+    }
+  }
 };
 
-messageForm[0].addEventListener('submit', function(e) {
+window.onload = async function() {
+  await ajaxHandler("GET","/test").then((data) => {
+    data.forEach(message => {
+      appendMessageBlock(message);
+    });
+  });
+}
+
+messageForm[0].addEventListener('submit', async function(e) {
   e.preventDefault();
   const currdatetime = new Date(Date.now());
   var dateForDisplay = "[" + makeDoubleDigitIfSingle(currdatetime.getDay()) + "/" + makeDoubleDigitIfSingle(currdatetime.getMonth()) + "/" + (currdatetime.getFullYear() - 2000) + "]";
@@ -45,21 +63,12 @@ messageForm[0].addEventListener('submit', function(e) {
       funcName: sendMessageFunctionName
     });
     ws.send(data);
+    await ajaxHandler("GET", "/test");
   }
-  // Making our connection  
-  xhr.open("GET", "/test", true);
-  // function execute after request is successful 
-  xhr.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
-      }
-  }
-  // Sending our request 
-  xhr.send();
   messageBox[0].value = "";
 });
 
-ws.onmessage = (message) => {
+function appendMessageBlock(message){
   var block = document.createElement("div");
   block.setAttribute("class", "messageBlock");
   var msgHolder = document.createElement("div");
@@ -78,4 +87,8 @@ ws.onmessage = (message) => {
   block.appendChild(msgHolder);
   messages[0].appendChild(block);
   block.scrollIntoView({block: "end"});
+}
+
+ws.onmessage = (message) => {
+  appendMessageBlock(message);
 }

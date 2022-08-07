@@ -28,13 +28,23 @@ var wsServer = new WebSocketServer({
   httpServer: server
 });
 
-wsServer.on('request', function(request) {
+wsServer.on('request', async function(request) {
   var connection = request.accept(null, request.origin);
-  connection.on('message', (data) => {
+  connection.on('message', async (data) => {
     var receivedData = JSON.parse(data.utf8Data);
     switch(receivedData.funcName) {
       case sendMessageFunctionName:
-        redisClient.setEx("messageQueue",3600,data.utf8Data);
+        msgs = await redisClient.get("messageQueue").then((x)=>x);
+        if(msgs) {
+          msgs = JSON.parse(msgs);
+          msgs.push(receivedData);
+        }
+        else{
+          msgs = [receivedData];
+        }
+        console.log(typeof(msgs));
+        console.log(JSON.stringify(msgs));
+        redisClient.setEx("messageQueue",3600,JSON.stringify(msgs));
         connection.send(data.utf8Data);
         break;
       default:
@@ -51,9 +61,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test',async (req, res) => {
-  var data = "init";
-  data = await redisClient.get("messageQueue").then((x)=>x.text());
-  console.log(data+ "hello");
+  var data = await redisClient.get("messageQueue").then((x)=>x);
   res.send(data);
 });
 
