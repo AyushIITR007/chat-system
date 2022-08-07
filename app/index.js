@@ -1,13 +1,6 @@
 var ws = new WebSocket("ws://localhost:3000");
-
-// const redis = require('redis');
-// const client = redis.createClient({
-//     socket: {
-//         host: '<hostname>',
-//         port: <port>
-//     },
-//     password: '<password>'
-// });
+// Creating Our XMLHttpRequest object 
+var xhr = new XMLHttpRequest();
 
 const messageForm = document.getElementsByClassName("sendMessageForm");
 const messageBox = document.getElementsByClassName("messageBox");
@@ -36,6 +29,10 @@ function AmPmFormatting(time)
   return formattedTime;
 }
 
+window.onload = function() { 
+
+};
+
 messageForm[0].addEventListener('submit', function(e) {
   e.preventDefault();
   const currdatetime = new Date(Date.now());
@@ -49,6 +46,16 @@ messageForm[0].addEventListener('submit', function(e) {
     });
     ws.send(data);
   }
+  // Making our connection  
+  xhr.open("GET", "/test", true);
+  // function execute after request is successful 
+  xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+      }
+  }
+  // Sending our request 
+  xhr.send();
   messageBox[0].value = "";
 });
 

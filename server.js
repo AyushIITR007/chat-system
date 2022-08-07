@@ -5,6 +5,17 @@ const server = http.createServer(app);
 const WebSocketServer = require('websocket').server;
 const favicon = require('serve-favicon');
 
+const redis = require('redis');
+const { throws } = require('assert');
+const redisClient = redis.createClient();
+
+async function main () {
+  // You can use await inside this function block
+  await redisClient.connect();
+}
+main();
+
+
 const sendMessageFunctionName = "sendMessage";
 
 //To load static files from "app" directory
@@ -23,6 +34,7 @@ wsServer.on('request', function(request) {
     var receivedData = JSON.parse(data.utf8Data);
     switch(receivedData.funcName) {
       case sendMessageFunctionName:
+        redisClient.setEx("messageQueue",3600,data.utf8Data);
         connection.send(data.utf8Data);
         break;
       default:
@@ -36,6 +48,13 @@ wsServer.on('request', function(request) {
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/test',async (req, res) => {
+  var data = "init";
+  data = await redisClient.get("messageQueue").then((x)=>x.text());
+  console.log(data+ "hello");
+  res.send(data);
 });
 
 //----URL Routings End----
