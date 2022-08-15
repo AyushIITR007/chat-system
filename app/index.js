@@ -1,13 +1,6 @@
 var ws = new WebSocket("ws://localhost:3000");
-
-// const redis = require('redis');
-// const client = redis.createClient({
-//     socket: {
-//         host: '<hostname>',
-//         port: <port>
-//     },
-//     password: '<password>'
-// });
+// Creating Our XMLHttpRequest object 
+var xhr = new XMLHttpRequest();
 
 const messageForm = document.getElementsByClassName("sendMessageForm");
 const messageBox = document.getElementsByClassName("messageBox");
@@ -36,7 +29,37 @@ function AmPmFormatting(time)
   return formattedTime;
 }
 
-messageForm[0].addEventListener('submit', function(e) {
+xhr.onreadystatechange = function () {
+  if (this.readyState == 4 && this.status == 200) {
+    datass = JSON.parse(this.response);
+  }
+}
+
+async function ajaxHandler(method, endpoint, async=true) { 
+  
+  // Making our connection to given route  
+  xhr.open(method, endpoint, async);
+  
+  // Sending our request 
+  xhr.send();
+};
+
+window.onload = async function() {
+  var flag = false;
+  await ajaxHandler("GET","/test").then(() => {
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200 && !flag) {
+        var data = JSON.parse(this.response);
+        data.forEach(message => {
+          appendMessageBlock(message)
+        });
+        flag = true;
+      }
+    }
+  });
+}
+
+messageForm[0].addEventListener('submit', async function(e) {
   e.preventDefault();
   const currdatetime = new Date(Date.now());
   var dateForDisplay = "[" + makeDoubleDigitIfSingle(currdatetime.getDay()) + "/" + makeDoubleDigitIfSingle(currdatetime.getMonth()) + "/" + (currdatetime.getFullYear() - 2000) + "]";
@@ -48,11 +71,12 @@ messageForm[0].addEventListener('submit', function(e) {
       funcName: sendMessageFunctionName
     });
     ws.send(data);
+    await ajaxHandler("GET", "/test");
   }
   messageBox[0].value = "";
 });
 
-ws.onmessage = (message) => {
+function appendMessageBlock(message){
   var block = document.createElement("div");
   block.setAttribute("class", "messageBlock");
   var msgHolder = document.createElement("div");
@@ -61,14 +85,16 @@ ws.onmessage = (message) => {
   timeStampHolder.setAttribute("class", "timeStampHolder");
   var msgTextHolder = document.createElement("div");
   msgTextHolder.setAttribute("class", "msgTextHolder");
-
-  var msgJson = JSON.parse(message.data);
-  timeStampHolder.textContent = msgJson.time;
-  msgTextHolder.textContent = msgJson.message;
+  timeStampHolder.textContent = message.time;
+  msgTextHolder.textContent = message.message;
 
   msgHolder.appendChild(timeStampHolder);
   msgHolder.appendChild(msgTextHolder);
   block.appendChild(msgHolder);
   messages[0].appendChild(block);
   block.scrollIntoView({block: "end"});
+}
+
+ws.onmessage = (message) => {
+  appendMessageBlock(JSON.parse(message.data));
 }
