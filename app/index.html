@@ -27,7 +27,7 @@
                 <input type="text" class="searchBar" autocomplete="off" placeholder="Click to search" />
               </div>
               <div class="searchButtonHolder">
-                <input type="submit" class="searchButton" value="Find" />
+                <input autocomplete="false" type="submit" class="searchButton" value="Find" />
               </div>
             </form>
           </div>
@@ -37,9 +37,9 @@
             <div class="messages"></div>
           </div>
           <div class="sendMessageFormHolder">
-            <form class="sendMessageForm" id="sendMessageForm">
+            <form class="sendMessageForm" name="sendMessageForm" id="sendMessageForm" autocomplete="off">
               <div class="messageBoxHolder">
-                <input class="messageBox" placeholder="Click to type a message" autocomplete="off" />
+                <input class="messageBox" name="messageBox" placeholder="Click to type a message" autocomplete="off" />
               </div>
               <div class="sendMessageButtonHolder">
                 <input type="submit" class="sendMessageButton" value="Send" />

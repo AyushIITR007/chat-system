@@ -4,24 +4,28 @@ const http = require('http');
 const server = http.createServer(app);
 const WebSocketServer = require('websocket').server;
 const favicon = require('serve-favicon');
-
 const redis = require('redis');
-const { throws } = require('assert');
 const redisClient = redis.createClient();
 
-async function main () {
-  // You can use await inside this function block
-  await redisClient.connect();
-}
-main();
-
+//----String Constants Begin----
 
 const sendMessageFunctionName = "sendMessage";
 
+//----String Constants End----
+
 //To load static files from "app" directory
 app.use(express.static("app"));
+
+//To load favicon image
 app.use(favicon(__dirname + "/app/favicon.png"));
 
+//----Functions Begin----
+
+async function initRedis () {
+  await redisClient.connect();
+}
+
+//----Functions End----
 
 //Initializing websocket
 var wsServer = new WebSocketServer({
@@ -42,8 +46,6 @@ wsServer.on('request', async function(request) {
         else{
           msgs = [receivedData];
         }
-        console.log(typeof(msgs));
-        console.log(JSON.stringify(msgs));
         redisClient.setEx("messageQueue",3600,JSON.stringify(msgs));
         connection.send(data.utf8Data);
         break;
@@ -60,13 +62,15 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/test',async (req, res) => {
-  var data = await redisClient.get("messageQueue").then((x)=>x);
+app.get('/loadMessages',async (req, res) => {
+  var data = await redisClient.get("messageQueue");
   res.send(data);
 });
 
 //----URL Routings End----
 
+//Initialize Redis
+initRedis();
 
 //Host app on port
 server.listen(3000, () => {
