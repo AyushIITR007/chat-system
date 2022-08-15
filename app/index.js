@@ -29,25 +29,33 @@ function AmPmFormatting(time)
   return formattedTime;
 }
 
+xhr.onreadystatechange = function () {
+  if (this.readyState == 4 && this.status == 200) {
+    datass = JSON.parse(this.response);
+  }
+}
+
 async function ajaxHandler(method, endpoint, async=true) { 
-    // Making our connection to given route  
+  
+  // Making our connection to given route  
   xhr.open(method, endpoint, async);
   
   // Sending our request 
   xhr.send();
-
-  xhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-        return JSON.parse(this.response);
-    }
-  }
 };
 
 window.onload = async function() {
-  await ajaxHandler("GET","/test").then((data) => {
-    data.forEach(message => {
-      appendMessageBlock(message);
-    });
+  var flag = false;
+  await ajaxHandler("GET","/test").then(() => {
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200 && !flag) {
+        var data = JSON.parse(this.response);
+        data.forEach(message => {
+          appendMessageBlock(message)
+        });
+        flag = true;
+      }
+    }
   });
 }
 
@@ -77,10 +85,8 @@ function appendMessageBlock(message){
   timeStampHolder.setAttribute("class", "timeStampHolder");
   var msgTextHolder = document.createElement("div");
   msgTextHolder.setAttribute("class", "msgTextHolder");
-
-  var msgJson = JSON.parse(message.data);
-  timeStampHolder.textContent = msgJson.time;
-  msgTextHolder.textContent = msgJson.message;
+  timeStampHolder.textContent = message.time;
+  msgTextHolder.textContent = message.message;
 
   msgHolder.appendChild(timeStampHolder);
   msgHolder.appendChild(msgTextHolder);
@@ -90,5 +96,5 @@ function appendMessageBlock(message){
 }
 
 ws.onmessage = (message) => {
-  appendMessageBlock(message);
+  appendMessageBlock(JSON.parse(message.data));
 }
