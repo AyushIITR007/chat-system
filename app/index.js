@@ -1,38 +1,84 @@
 var ws = new WebSocket("ws://localhost:3000");
+var xhr = new XMLHttpRequest();
 
-// const redis = require('redis');
-// const client = redis.createClient({
-//     socket: {
-//         host: '<hostname>',
-//         port: <port>
-//     },
-//     password: '<password>'
-// });
+const messageForm = document.getElementsByClassName("sendMessageForm");
+const messageBox = document.getElementsByClassName("messageBox");
+const messages = document.getElementsByClassName("messages");
+const sendMessageFunctionName = "sendMessage";
 
-client.on('error', err => {
-    console.log('Error ' + err);
-});
+function makeDoubleDigitIfSingle(num) {
+  return (num/10) < 1 ? "0" + num : num;
+}
 
-form.addEventListener('submit', function(e) {
+function AmPmFormatting(time) {
+  var hours = Number(time.substring(0,2));
+  if (hours >= 12)
+  {
+    if(hours != 12) {
+      hours -= 12;
+    }
+    time += "PM";
+  }
+  else {
+    time += "AM";
+  }
+  var formattedTime = parseInt((hours/10)).toString() + hours%10 + time.substring(2)
+  return formattedTime;
+}
+
+function appendMessageBlock(message) {
+  var block = document.createElement("div");
+  block.setAttribute("class", "messageBlock");
+  var msgHolder = document.createElement("div");
+  msgHolder.setAttribute("class", "msgHolder");
+  var timeStampHolder = document.createElement("div");
+  timeStampHolder.setAttribute("class", "timeStampHolder");
+  var msgTextHolder = document.createElement("div");
+  msgTextHolder.setAttribute("class", "msgTextHolder");
+  timeStampHolder.textContent = message.time;
+  msgTextHolder.textContent = message.message;
+
+  msgHolder.appendChild(timeStampHolder);
+  msgHolder.appendChild(msgTextHolder);
+  block.appendChild(msgHolder);
+  messages[0].appendChild(block);
+  block.scrollIntoView({block: "end"});
+}
+
+async function ajaxHandler(method, endpoint, async=true) { 
+  xhr.open(method, endpoint, async);
+  xhr.send();
+};
+
+window.onload = async function() {
+  await ajaxHandler("GET","/loadMessages").then(() => {
+    xhr.onreadystatechange = function () {  
+      if (this.readyState == 4 && this.status == 200) {
+        var data = JSON.parse(this.response);
+        data.forEach(message => {
+          appendMessageBlock(message)
+        });
+      }
+    }
+  });
+}
+
+messageForm[0].addEventListener('submit', async function(e) {
   e.preventDefault();
-  const datetime = new Date(Date.now());
-  if (input.value) {
+  const currdatetime = new Date(Date.now());
+  var dateForDisplay = "[" + makeDoubleDigitIfSingle(currdatetime.getDay()) + "/" + makeDoubleDigitIfSingle(currdatetime.getMonth()) + "/" + (currdatetime.getFullYear() - 2000) + "]";
+  var timeForDisplay = AmPmFormatting(makeDoubleDigitIfSingle(currdatetime.getHours()) + ":" + makeDoubleDigitIfSingle(currdatetime.getMinutes()));
+  if (messageBox[0].value) {
     var data = JSON.stringify({
-      message: input.value,
-      time: datetime.toString()
+      message: messageBox[0].value.trim(),
+      time: dateForDisplay + " " + timeForDisplay,
+      funcName: sendMessageFunctionName
     });
     ws.send(data);
   }
-  input.value = '';
+  messageBox[0].value = "";
 });
 
 ws.onmessage = (message) => {
-  var item = document.createElement('li');
-  //parsing once was still converting to string for some reason, but parsing twice worked
-  var myJson = JSON.parse(message.data);
-  myJson = JSON.parse(myJson);
-  var text = myJson.message;
-  var time = myJson.time;
-  item.textContent = time + ": " + text;
-  messages.appendChild(item);
+  appendMessageBlock(JSON.parse(message.data));
 }

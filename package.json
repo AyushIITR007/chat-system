@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server.js",
-    "redis": "redis-cli"
+    "redis": "redis-server"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "express": "4.18.1",
     "nodemon": "2.0.19",
     "redis": "4.2.0",
+    "serve-favicon": "2.5.0",
     "websocket": "1.0.34"
   }
 }

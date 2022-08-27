@@ -1,9 +1,256 @@
-body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+body {
+	margin: auto;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+	overflow-x: hidden;
+}
 
-#form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 25%; right: 25%; width: 50%; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); border: 1px solid #777; }
-#input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-#form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-#form > button:hover { border: 2px solid #2b09a5; }
-#messages { list-style-type: none; margin: 0; padding: 0; }
-#messages > li { padding: 0.5rem 1rem; }
-#messages > li:nth-child(odd) { background: #efefef; }
+input:focus,input:active,textarea:focus,textarea:active {
+	outline: none !important;
+}
+
+.container {
+	display: flex;
+	flex-flow: column wrap;
+}
+
+.topBar {
+	background: #333;
+	box-shadow: 0 1px 1px #444;
+	z-index: 2000;
+	display: flex;
+	flex-flow: row wrap;
+	height: 5vh;
+}
+
+.titleHolder {
+	width: 25%;
+	max-height: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.logoHolder {
+	width: 25%;
+	height: 75%;
+	margin-left: 0.5rem;
+}
+
+.logo {
+	max-height: 100%;
+}
+
+.channelHolder {
+	width: 75%;
+	max-height: 100%;
+	align-items: center;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+
+.channelTitleHolder font {
+	font-size: 100%;
+	color: #ed6109;
+	font-weight: bold;
+}
+
+.channelTitleHolder>font:nth-child(odd) {
+	margin-left: 1rem;
+	color: #777;
+	font-weight: normal;
+}
+
+.sectionsHolder {
+	height: 95vh;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+#leftSection {
+	width: 25%;
+	background: #424242;
+	display: flex;
+	flex-flow: column wrap;
+}
+
+.searchFormHolder {
+	display: flex;
+	height: 5%;
+	flex-flow: row wrap;
+} 
+
+.searchForm {
+	width: 100%;
+	padding: 0.5rem;
+	height: 100%;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.searchBarHolder {
+	width: 90%;
+	height: 100%
+}
+
+.searchBar {
+	width: 100%;
+	height: 100%;
+	padding: 0.5rem;
+	border: none;
+	color: #ccc;
+	background: transparent;
+	box-shadow: 0 1px 2px #333;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	transition: 0.1s all ease-in-out;
+}
+
+.searchBar:hover, .searchBar:focus {
+	box-shadow: 0 1px 2px #222;
+	color: #fff;
+}
+
+.searchButtonHolder {
+	width: 10%;
+	height: 100%;
+}
+
+.searchButton {
+	width: 100%;
+	height: 100%;
+	padding: 0.2rem;
+	border: none;
+	color: #777;
+	background: transparent;
+	cursor: pointer;
+	font-weight: bold;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	transition: 0.15s color ease-in-out;
+}
+
+.searchButton:hover, .searchButton:active {
+	color: #ed6109;
+}
+
+#rightSection {
+	width: 75%;
+	background: #616161;
+}
+
+.messagesHolder {
+	width: 100%;
+	height: 85%;
+	max-height: 85%;
+	display: flex;
+	flex-flow: column wrap;
+	align-items: center;
+}
+
+.messages {
+	width: 80%;
+	height: 100%;
+	max-height: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	overflow-y: scroll;
+  	-ms-overflow-style: none;
+  	scrollbar-width: none;
+}
+
+.messages::-webkit-scrollbar {
+	display: none;
+}
+
+.messageBlock {
+	width: auto;
+}
+
+.msgHolder {
+	height: auto;
+	max-width: 60%;
+	margin-top: 1rem;
+	background: #585858;
+	border-radius: 0.2rem;
+	display: inline-block;
+	padding: 0.5rem;
+	box-shadow: 0 1px 1px #333;
+}
+
+.timeStampHolder {
+	width: 100%;
+	color: #ed6109;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 90%;
+}
+
+.msgTextHolder {
+	color: #fff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-weight: normal;
+}
+
+.sendMessageFormHolder {
+	height: 15%;
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.sendMessageForm {
+	height: 100%;
+	width: 80%;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.messageBoxHolder {
+	width: 90%;
+	height: auto;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+.messageBox {
+	padding: 0.5rem;
+	width: 100%;
+	resize: none;
+	line-height: 1;
+	color: #fff;
+	border: none;
+	border-radius: 0.2rem 0 0 0.2rem;
+	box-shadow: 0 1px 1px #444;
+	background: #565656;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	transition: 0.15s all ease-in-out;
+}
+
+.messageBox:hover, .messageBox:focus {
+	color: #fff;
+}
+
+.sendMessageButtonHolder {
+	width: 10%;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.sendMessageButton {
+	width: 100%;
+	padding: 0.5rem;
+	border: none;
+	border-radius: 0 0.2rem 0.2rem 0;
+	background: #ed6109;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	cursor: pointer;
+	transition: 0.2s all ease-in-out;
+	box-shadow: 0 1px 1px #444;
+}
+
+.sendMessageButton:hover {
+	background: #c94f02;
+}
