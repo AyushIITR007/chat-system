@@ -9,7 +9,7 @@
       <div class="topBar">
         <div class="titleHolder">
           <div class="logoHolder">
-            <img class="logo" src="favicon.png" />
+            <img class="logo" src="logo.png" />
           </div>
         </div>
         <div class="channelHolder">
@@ -17,6 +17,11 @@
             <font>Channel: </font>
             <font>All</font>
           </div>
+        </div>
+        <div class="titleBarOptionsHolder">
+          <input type="submit" value="-" class="titleBarOption" id="titleBarMinimizeButton" />
+          <input type="submit" value="+" class="titleBarOption" id="titleBarMaximizeButton" />
+          <input type="submit" value="x" class="titleBarOption" id="titleBarCloseButton" />
         </div>
       </div>
       <div class="sectionsHolder">
@@ -37,7 +42,8 @@
             <div class="messages"></div>
           </div>
           <div class="sendMessageFormHolder">
-            <form class="sendMessageForm" name="sendMessageForm" id="sendMessageForm" autocomplete="off">
+            <form class="sendMessageForm" name="sendMessageForm" action="" id="sendMessageForm" autocomplete="off">
+              <input type="text" name="hidden" autocomplete="false" style="display:none;" />
               <div class="messageBoxHolder">
                 <input class="messageBox" name="messageBox" placeholder="Click to type a message" autocomplete="off" />
               </div>

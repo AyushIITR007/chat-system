@@ -38,15 +38,15 @@ wsServer.on('request', async function(request) {
     var receivedData = JSON.parse(data.utf8Data);
     switch(receivedData.funcName) {
       case sendMessageFunctionName:
-        msgs = await redisClient.get("messageQueue").then((x)=>x);
-        if(msgs) {
-          msgs = JSON.parse(msgs);
-          msgs.push(receivedData);
-        }
-        else{
-          msgs = [receivedData];
-        }
-        redisClient.setEx("messageQueue",3600,JSON.stringify(msgs));
+        // msgs = await redisClient.get("messageQueue").then((x)=>x);
+        // if(msgs) {
+        //   msgs = JSON.parse(msgs);
+        //   msgs.push(receivedData);
+        // }
+        // else{
+        //   msgs = [receivedData];
+        // }
+        // redisClient.setEx("messageQueue",3600,JSON.stringify(msgs));
         connection.send(data.utf8Data);
         break;
       default:
@@ -70,7 +70,7 @@ app.get('/loadMessages',async (req, res) => {
 //----URL Routings End----
 
 //Initialize Redis
-initRedis();
+//initRedis();
 
 //Host app on port
 server.listen(3000, () => {
