@@ -67,6 +67,10 @@ app.get('/loadMessages',async (req, res) => {
   res.send(data);
 });
 
+app.get('/home',(req, res) => {
+  res.sendFile(__dirname + '/app/home.html');
+});
+
 //----URL Routings End----
 
 //Initialize Redis
